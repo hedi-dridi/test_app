@@ -27,3 +27,5 @@ export interface Profile {
   avatar_url: string | null;
   updated_at: string;
 }
+
+export default interface
