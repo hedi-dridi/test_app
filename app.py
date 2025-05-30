@@ -12,8 +12,9 @@ app = Flask(__name__, template_folder="templates", static_folder="static")
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# MongoDB setup
-client = MongoClient('mongodb://localhost:27017/')
+# MongoDB setup with environment variable
+mongodb_uri = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/chat_app')
+client = MongoClient(mongodb_uri)
 db = client['chat_app']
 chats_collection = db['chats']
 messages_collection = db['messages']

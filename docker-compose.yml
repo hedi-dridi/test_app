@@ -1,26 +1,25 @@
 version: '3.8'
 services:
-  keystone-app:
+  app:
     build: .
     ports:
       - "3000:3000"
       - "5000:5000"
-      - "4444:4444"
     volumes:
       - .:/app
       - /app/node_modules
-      # Mount host's tools directories
-      - /usr/bin:/usr/bin:ro
-      - /usr/share:/usr/share:ro
-      - /usr/lib:/usr/lib:ro
-      - /opt:/opt:ro
-      - /usr/local/bin:/usr/local/bin:ro
-      - /usr/local/share:/usr/local/share:ro
-      - /var/lib/kali:/var/lib/kali:ro
-    network_mode: "host"
-    privileged: true
     environment:
       - NODE_ENV=development
-      - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
-      - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
-    restart: unless-stopped
+      - MONGODB_URI=mongodb://mongodb:27017/chat_app
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:

@@ -1,13 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
+import { MongoClient, ObjectId } from 'mongodb';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
-}
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/chat_app';
+const client = new MongoClient(mongoUri);
 
 export interface User {
   id: string;
@@ -15,27 +9,27 @@ export interface User {
 }
 
 export interface Chat {
-  id: string;
+  _id: ObjectId;
   user_id: string;
   title: string;
-  created_at: string;
-  chat_number: number;
+  created_at: Date;
 }
 
 export interface Message {
-  id: string;
+  _id: ObjectId;
   chat_id: string;
   user_id: string;
   content: string;
   sender: string;
-  created_at: string;
+  created_at: Date;
 }
 
 export interface Profile {
-  id: string;
+  _id: ObjectId;
+  user_id: string;
   username: string | null;
   avatar_url: string | null;
-  updated_at: string;
+  updated_at: Date;
 }
 
-export default supabase;
+export default client;
